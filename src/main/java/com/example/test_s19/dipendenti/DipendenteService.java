@@ -35,7 +35,7 @@ public class DipendenteService {
             throw new UsernameException("Email già in uso");
         }
         dipendente = dipendenteRepository.save(dipendente);
-        emailSenderService.sendEmail(dipendente.getEmail(), "Benvenuto", "Ciao"+dipendente.getNome() + " " + dipendente.getCognome()+"! Benvenuto nella nostra azienda!" );
+        emailSenderService.sendEmail(dipendente.getEmail(), "Benvenuto", "Ciao "+dipendente.getNome() + " " + dipendente.getCognome()+"! Benvenuto nella nostra azienda!" );
         return new CommonResponse(dipendente.getId());
     }
     public Page<Dipendente> findAll(int page, int size, String sort) {
