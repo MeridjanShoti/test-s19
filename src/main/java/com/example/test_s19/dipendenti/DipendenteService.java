@@ -1,20 +1,26 @@
 package com.example.test_s19.dipendenti;
 
+import com.example.test_s19.cloudinary.CloudinaryService;
 import com.example.test_s19.common.CommonResponse;
 import com.example.test_s19.exceptions.NotFoundException;
 import com.example.test_s19.exceptions.UsernameException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Validated
 public class DipendenteService {
     @Autowired
     private DipendenteRepository dipendenteRepository;
+    @Autowired
+    private CloudinaryService cloudinaryService;
     public CommonResponse createDipendente(DipendenteRequest request) {
         Dipendente dipendente = new Dipendente();
         BeanUtils.copyProperties(request, dipendente);
@@ -27,28 +33,31 @@ public class DipendenteService {
         dipendente = dipendenteRepository.save(dipendente);
         return new CommonResponse(dipendente.getId());
     }
-    public Page<Dipendente> findAll(Pageable pageable) {
+    public Page<Dipendente> findAll(int page, int size, String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return dipendenteRepository.findAll(pageable);
     }
 
     public Dipendente getDipendenteById(Long id) {
         return dipendenteRepository.findById(id).orElseThrow(() -> new NotFoundException("Dipendente non trovato"));
     }
-    public Dipendente updateDipendente(Long id, Dipendente dipendente) {
-        Dipendente existingDipendente = dipendenteRepository.findById(id).orElseThrow(() -> new NotFoundException("Dipendente non trovato"));
-        if (existingDipendente != null) {
-            existingDipendente.setNome(dipendente.getNome());
-            existingDipendente.setCognome(dipendente.getCognome());
-            existingDipendente.setEmail(dipendente.getEmail());
-            existingDipendente.setUsername(dipendente.getUsername());
-            return dipendenteRepository.save(existingDipendente);
-        }
-        return null;
+    public Dipendente updateDipendente(Long id, DipendenteRequest request) {
+        Dipendente dipendente = dipendenteRepository.findById(id).orElseThrow(() -> new NotFoundException("Dipendente non trovato"));
+        BeanUtils.copyProperties(request, dipendente);
+        return dipendenteRepository.save(dipendente);
     }
     public void deleteDipendente(Long id) {
+        if (!dipendenteRepository.existsById(id)) {
+            throw new NotFoundException("Dipendente non trovato");
+        }
         dipendenteRepository.deleteById(id);
     }
     public boolean existsByUsername(String username) {
         return dipendenteRepository.existsByUsername(username);
+    }
+    public void uploadImage(Long id, MultipartFile file) {
+        Dipendente dipendente = dipendenteRepository.findById(id).orElseThrow(() -> new NotFoundException("Dipendente non trovato"));
+        dipendente.setAvatar(cloudinaryService.uploadImage(file));
+        dipendenteRepository.save(dipendente);
     }
 }

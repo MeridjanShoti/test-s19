@@ -1,5 +1,6 @@
 package com.example.test_s19.prenotazioni;
 
+import com.example.test_s19.dipendenti.Dipendente;
 import com.example.test_s19.viaggi.Viaggio;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,4 +25,7 @@ public class Prenotazione {
     @OneToOne
     @JoinColumn(name = "viaggio_id")
     private Viaggio viaggio;
+    @ManyToOne
+    @JoinColumn(name = "dipendente_id")
+    private Dipendente dipendente;
 }
