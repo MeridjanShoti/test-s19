@@ -3,6 +3,7 @@ package com.example.test_s19.prenotazioni;
 import com.example.test_s19.common.CommonResponse;
 import com.example.test_s19.dipendenti.Dipendente;
 import com.example.test_s19.dipendenti.DipendenteRepository;
+import com.example.test_s19.viaggi.Viaggio;
 import com.example.test_s19.viaggi.ViaggioRepository;
 import com.example.test_s19.viaggi.ViaggioRequest;
 import com.example.test_s19.viaggi.ViaggioService;
@@ -37,23 +38,20 @@ public class PrenotazioneService {
         prenotazione.setDipendente(dipendente);
         ViaggioRequest viaggioRequest = new ViaggioRequest();
         BeanUtils.copyProperties(request, viaggioRequest);
+        if (prenotazioneRepository.existsByViaggioDataAndDipendenteId(request.getData(), dipendenteId)
+                || !request.getData().isAfter(LocalDate.now())) {
+            throw new RuntimeException("Prenotazione non valida");
+        }
         viaggioService.createViaggio(viaggioRequest, prenotazione, dipendente);
         prenotazione.setViaggio(viaggioService.getViaggioById(prenotazione.getViaggio().getId()));
+
         System.out.println("sono prima del if");
         System.out.println("la condizione è "+(!prenotazioneRepository.existsByViaggioDataAndDipendenteId(request.getData(), dipendenteId) && request.getData().isAfter(LocalDate.now())));
 
-        if (!prenotazioneRepository.existsByViaggioDataAndDipendenteId(request.getData(), dipendenteId) && request.getData().isAfter(LocalDate.now())) {
-            System.out.println("sono nell'if");
             prenotazioneRepository.save(prenotazione);
             viaggioRepository.save(prenotazione.getViaggio());
 
 
-        } else {
-            System.out.println("sono nell'else");
-            System.out.println("la condizione è "+(!prenotazioneRepository.existsByViaggioDataAndDipendenteId(request.getData(), dipendenteId) && request.getData().isAfter(LocalDate.now())));
-            throw new RuntimeException("Prenotazione non valida");
-
-        }
         return new CommonResponse(prenotazione.getId());
 
     }
