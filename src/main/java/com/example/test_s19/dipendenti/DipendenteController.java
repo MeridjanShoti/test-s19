@@ -1,6 +1,7 @@
 package com.example.test_s19.dipendenti;
 
 import com.example.test_s19.common.CommonResponse;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class DipendenteController {
     }
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommonResponse createDipendente(@RequestBody DipendenteRequest request) {
+    public CommonResponse createDipendente(@RequestBody DipendenteRequest request) throws MessagingException {
         return dipendenteService.createDipendente(request);
     }
     @PutMapping("/{id}")

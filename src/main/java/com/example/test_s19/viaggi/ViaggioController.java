@@ -1,6 +1,5 @@
 package com.example.test_s19.viaggi;
 
-import com.example.test_s19.common.CommonResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -27,5 +26,14 @@ public class ViaggioController {
     public Viaggio updateViaggio(@PathVariable Long id, @RequestBody ViaggioRequest viaggioRequest) {
         return viaggioService.updateViaggio(id, viaggioRequest);
     }
-
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteViaggio(@PathVariable Long id) {
+        viaggioService.deleteViaggio(id);
+    }
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Viaggio updateStato(@PathVariable Long id) {
+        return viaggioService.updateStato(id);
+    }
 }

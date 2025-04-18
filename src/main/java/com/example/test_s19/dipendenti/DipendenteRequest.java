@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DipendenteRequest {
-    @NotBlank
+    @NotBlank (message = "Il nome non può essere vuoto")
     private String nome;
-    @NotBlank
+    @NotBlank (message = "Il cognome non può essere vuoto")
     private String cognome;
-    @NotBlank
+    @NotBlank (message = "L'email non può essere vuota")
     @Column(unique = true)
     private String email;
-    @NotBlank
+    @NotBlank (message = "L'username non può essere vuoto")
     @Column(unique = true)
     private String username;
 }

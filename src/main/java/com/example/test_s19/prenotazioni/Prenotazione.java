@@ -19,7 +19,7 @@ public class Prenotazione {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    private LocalDate dataRichiesta;
+    private LocalDate dataRichiesta=LocalDate.now();
     @Column(columnDefinition = "TEXT")
     private String noteDipendente;
     @OneToOne
