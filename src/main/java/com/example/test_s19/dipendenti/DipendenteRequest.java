@@ -20,4 +20,5 @@ public class DipendenteRequest {
     @NotBlank (message = "L'username non può essere vuoto")
     @Column(unique = true)
     private String username;
+
 }

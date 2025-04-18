@@ -14,10 +14,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class PrenotazioneRequest {
 
-    private String dataRichiesta;
+    private LocalDate dataRichiesta;
     @Column(columnDefinition = "TEXT")
     private String noteDipendente;
-    private Long dipendente_id;
     @NotBlank(message = "La destinazione non può essere vuota")
     private String destinazione;
     @NotNull(message = "La data non può essere null")

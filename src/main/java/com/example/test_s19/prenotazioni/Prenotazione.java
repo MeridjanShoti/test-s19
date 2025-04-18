@@ -28,4 +28,5 @@ public class Prenotazione {
     @ManyToOne
     @JoinColumn(name = "dipendente_id")
     private Dipendente dipendente;
+
 }

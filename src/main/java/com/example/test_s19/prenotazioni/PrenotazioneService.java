@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDate;
@@ -38,15 +39,25 @@ public class PrenotazioneService {
         BeanUtils.copyProperties(request, viaggioRequest);
         viaggioService.createViaggio(viaggioRequest, prenotazione, dipendente);
         prenotazione.setViaggio(viaggioService.getViaggioById(prenotazione.getViaggio().getId()));
-        if (!prenotazioneRepository.existsByViaggioDataAndDipendenteId(viaggioRequest.getData(), dipendenteId) && viaggioRequest.getData().isAfter(LocalDate.now())) {
+        System.out.println("sono prima del if");
+        System.out.println("la condizione è "+(!prenotazioneRepository.existsByViaggioDataAndDipendenteId(request.getData(), dipendenteId) && request.getData().isAfter(LocalDate.now())));
+
+        if (!prenotazioneRepository.existsByViaggioDataAndDipendenteId(request.getData(), dipendenteId) && request.getData().isAfter(LocalDate.now())) {
+            System.out.println("sono nell'if");
             prenotazioneRepository.save(prenotazione);
             viaggioRepository.save(prenotazione.getViaggio());
+
+
         } else {
+            System.out.println("sono nell'else");
+            System.out.println("la condizione è "+(!prenotazioneRepository.existsByViaggioDataAndDipendenteId(request.getData(), dipendenteId) && request.getData().isAfter(LocalDate.now())));
             throw new RuntimeException("Prenotazione non valida");
+
         }
         return new CommonResponse(prenotazione.getId());
 
     }
+
     public Prenotazione getPrenotazioneById(Long id) {
         return prenotazioneRepository.findById(id).orElseThrow(() -> new RuntimeException("Prenotazione non trovata"));
     }
