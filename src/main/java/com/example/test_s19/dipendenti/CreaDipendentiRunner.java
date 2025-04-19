@@ -19,8 +19,9 @@ public class CreaDipendentiRunner implements CommandLineRunner {
             dipendente.setCognome(faker.name().lastName());
             dipendente.setEmail(dipendente.getNome() + "." + dipendente.getCognome() + "@gmail.com");
             dipendente.setUsername(dipendente.getNome() + "." + dipendente.getCognome());
-            dipendente.setAvatar(faker.avatar().image());
+            dipendente.setAvatar("https://ui-avatars.com/api/?name=" + dipendente.getNome() + "+" + dipendente.getCognome());
             dipendenteRepository.save(dipendente);
+
         }
     }
 }
