@@ -34,6 +34,7 @@ public class DipendenteService {
         if (dipendenteRepository.existsByEmail(dipendente.getEmail())) {
             throw new UsernameException("Email già in uso");
         }
+        dipendente.setAvatar("https://ui-avatars.com/api/?name=" + dipendente.getNome() + "+" + dipendente.getCognome());
         dipendente = dipendenteRepository.save(dipendente);
         emailSenderService.sendEmail(dipendente.getEmail(), "Benvenuto", "Ciao "+dipendente.getNome() + " " + dipendente.getCognome()+"! Benvenuto nella nostra azienda!" );
         return new CommonResponse(dipendente.getId());
