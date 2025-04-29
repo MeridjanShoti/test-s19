@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class DipendenteController {
     @Autowired
     private DipendenteService dipendenteService;
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("")
     @ResponseStatus(HttpStatus.OK)
     public Page<Dipendente> findAll(@RequestParam(defaultValue = "0") int page,

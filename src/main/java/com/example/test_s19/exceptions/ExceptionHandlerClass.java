@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.HashMap;
 import java.util.Map;
 
-@ControllerAdvice
+/*@ControllerAdvice*/
 public class ExceptionHandlerClass extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
