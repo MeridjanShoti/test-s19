@@ -2,6 +2,7 @@ package com.example.test_s19.dipendenti;
 
 import com.example.test_s19.common.CommonResponse;
 import jakarta.mail.MessagingException;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class DipendenteController {
     }
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Dipendente findById(@RequestParam Long id) {
+    public Dipendente findById(@PathVariable("id") Long id) {
         return dipendenteService.getDipendenteById(id);
     }
     @PostMapping("")
